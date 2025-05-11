@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Обмен Вещами</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        {% if not user == '' %}
+        <h1>{{user.username}}</h1>
+        {% endif %}
+        <h1>Добро пожаловать на сайт обмена вещами!</h1>
+        <nav>
+            <ul>
+                <li><a href="">Главная</a></li>
+                <li><a href="/add_ads">Создать Объявление</a></li>
+                {% if user == '' %}
+                <li><a href="/auth">Вход</a></li>
+                <li><a href="/register">Регистрация</a></li>
+                {% else %}
+                <li><a href="/my_ads">Мои объявления</a></li>
+                <li><a href="/logout">Выход</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="advertisements">
+            <h2>Недавние Объявления</h2>
+            <div class="ad-list">
+                    {% for a in ads %}
+                    <div class="ad-item">
+                        <h3>{{a.Title}} </h3>
+                        <p>{{a.Description}}</p>
+                        <a href="" class="btn">Посмотреть</a>
+                        {% if a.User.id == user.id %}
+                        <a href="/edit_ads/{{a.id}}" class="btn">Редактировать</a>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

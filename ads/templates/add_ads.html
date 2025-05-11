@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать объявление</title>
+    <link rel="stylesheet" href="{% static 'css/styles_add.css' %}">
+</head>
+<style>
+    .modal {
+        display: none; 
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <header>
+        <h1>Создание объявления</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="">Мои объявления</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="create-ad-form">
+            <h2>Новое объявление</h2>
+            <form id = 'adForm' method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="category">Категория:</label>
+                    <select class='form_select' name="category" id="">
+                        {% for c in category %}
+                        <option value="{{c.id}}">{{c.Name}}</option>
+                        {% endfor%}
+                    </select> <br>
+                </div> 
+                <div>
+                    <label for="title">Название:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div>
+                    <label for="description">Описание:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div>
+                    <label for="condition">Состояние:</label>
+                    <input type="text" id="condition" name="condition" required>
+                </div>
+                <button type="submit">Создать объявление</button>
+            </form>
+            {% if error %}
+                <div class="error">
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+            <div id="confirmationModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="closeModal">&times;</span>
+                    <h2>Подтверждение создания объявления</h2>
+                    <p id="modalTitle"></p>
+                    <p id="modalDescription"></p>
+                    <button id="confirmButton">Подтвердить</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById('adForm');
+        const modal = document.getElementById('confirmationModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const closeModal = document.getElementById('closeModal');
+        const confirmButton = document.getElementById('confirmButton');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            modalTitle.textContent = `Название: ${title}`;
+            modalDescription.textContent = `Описание: ${description}`;
+            modal.style.display = 'block';
+        });
+
+        closeModal.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        confirmButton.onclick = function() {
+            form.submit(); 
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать объявление</title>
+</head>
+<body>
+    <h1>Редактировать объявление</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class='label'>Выберите категорию</div>
+                <select class='form_select' name="category" id="">
+                    <option value="{{ads.Category.id}}">{{ads.Category.Name}}</option>
+                    {% for c in cat %}
+                    <option value="{{c.id}}">{{c.Name}}</option>
+                    {% endfor%}
+                </select> <br>
+                <div class='label'>Товар/услуга</div>
+                <input class='form_input' type="text" name='title' value='{{ads.Title}}'>
+                <div class='label'>Состояние</div>
+                <input class='form_input' type="text" name='condition' value='{{ads.Сondition}}'>
+                <div class='label'>Текст объявления (Описание товара/услуги)</div>
+                <textarea class='form_input' type="textarea" name='description' style='height: 139px'>{{ads.Description}}</textarea>
+        <button type="submit">Сохранить</button>
+    </form>
+    
+    <a href="/">Назад к списку объявлений</a>
+</body>
+</html>

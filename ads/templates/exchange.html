@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Предложения для обмена</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .offer {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .offer h2 {
+            margin: 0 0 10px;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 10px 15px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .accept {
+            background-color: green;
+        }
+        .decline {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">На главную</a>
+    <h1>Предложения для обмена</h1>
+    {% if offers %}
+        {% for offer in offers %}
+            {% for f in offer %}
+            <div class="offer">
+                
+                <h2>Обменять {{ f.ad_sender_id.Title }}</h2>
+                <p>На: {{ f.ad_receiver_id.Title }}</p>
+                <p>Статус: {{ f.status.status }}</p>
+                {% if f.ad_receiver_id.id in ads_user and f.status.id == 1 %} 
+                <div class="buttons">
+                    <form action="/accept-offer/{{f.id}}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn accept">Принять</button>
+                    </form>
+                    <form action="/decline-offer/{{f.id}}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn decline">Отклонить</button>
+                    </form>
+                </div>
+                {% endif %}
+               
+            </div>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p>У вас нет предложений для обмена.</p>
+    {% endif %}
+</body>
+</html>

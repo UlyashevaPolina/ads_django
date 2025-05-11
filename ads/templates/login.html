@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'css/styles _login.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Вход на сайт обмена вещами</h1>
+        <nav>
+            <ul>
+                <li><a href="">Главная</a></li>
+                <li><a href="">Регистрация</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="login-form">
+            <h2>Авторизация</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="login">Логин:</label>
+                    <input type="text" id="login" name="login" required>
+                </div>
+                <div>
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="psw" required>
+                </div>
+                <button type="submit">Войти</button>
+            </form>
+            {% if form.errors %}
+                <div class="error">
+                    <p>Неверное имя пользователя или пароль.</p>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+</body>
+</html>
